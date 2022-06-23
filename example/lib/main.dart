@@ -1,8 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'dart:async';
-
 import 'package:flutter/services.dart';
 import 'package:managed_configurations/managed_configurations.dart';
 
@@ -55,7 +54,7 @@ class _MyAppState extends State<MyApp> {
                 title: Text('Initial managed configuration:'),
                 subtitle: Text('$_managedAppConfigurations\n'),
               ),
-              StreamBuilder<Map<String, dynamic>?>(
+              StreamBuilder<Map<String, dynamic>>(
                 stream: ManagedConfigurations.mangedConfigurationsStream,
                 builder: (context, snapshot) {
                   return ListTile(

@@ -10,6 +10,7 @@ const String reportKeyedAppState = "reportKeyedAppState";
 enum Severity { SEVERITY_INFO, SEVERITY_ERROR }
 
 extension SeverityExtensions on Severity {
+  // ignore: missing_return
   int toInteger() {
     switch (this) {
       case Severity.SEVERITY_INFO:
@@ -26,17 +27,17 @@ class ManagedConfigurations {
   static const EventChannel _managedConfigurationEventChannel =
       const EventChannel('managed_configurations_event');
 
-  static StreamController<Map<String, dynamic>?>
+  static StreamController<Map<String, dynamic>>
       _mangedConfigurationsController =
-      StreamController<Map<String, dynamic>?>.broadcast();
+      StreamController<Map<String, dynamic>>.broadcast();
 
-  static Stream<Map<String, dynamic>?> _managedConfigurationsStream =
+  static Stream<Map<String, dynamic>> _managedConfigurationsStream =
       _mangedConfigurationsController.stream.asBroadcastStream();
 
   /// Returns a broadcast stream which calls on managed app configuration changes
   /// Json will be returned
   /// Call [dispose] when stream is not more necessary
-  static Stream<Map<String, dynamic>?> get mangedConfigurationsStream {
+  static Stream<Map<String, dynamic>> get mangedConfigurationsStream {
     if (_actionApplicationRestrictionsChangedSubscription == null) {
       _actionApplicationRestrictionsChangedSubscription =
           _managedConfigurationEventChannel
@@ -51,12 +52,12 @@ class ManagedConfigurations {
     return _managedConfigurationsStream;
   }
 
-  static StreamSubscription<dynamic>?
+  static StreamSubscription<dynamic>
       _actionApplicationRestrictionsChangedSubscription;
 
   /// Returns managed app configurations as Json
-  static Future<Map<String, dynamic>?> get getManagedConfigurations async {
-    final String? rawJson = await _managedConfigurationMethodChannel
+  static Future<Map<String, dynamic>> get getManagedConfigurations async {
+    final String rawJson = await _managedConfigurationMethodChannel
         .invokeMethod(getManagedConfiguration);
     if (rawJson != null) {
       return json.decode(rawJson);
@@ -69,8 +70,8 @@ class ManagedConfigurations {
   static Future<void> reportKeyedAppStates(
     String key,
     Severity severity,
-    String? message,
-    String? data,
+    String message,
+    String data,
   ) async {
     if (Platform.isAndroid) {
       await _managedConfigurationMethodChannel.invokeMethod(
